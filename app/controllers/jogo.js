@@ -1,7 +1,8 @@
 module.exports.jogo = function (application, req, res) {
 
-    if (req.session.autorizado != true) {
+    if(req.session.autorizado !== true){
         res.send('Usuário precisa fazer login')
+        return;   
     }
 
     var msg = ''
@@ -27,26 +28,32 @@ module.exports.sair = function (application, req, res) {
 
 module.exports.suditos = function (application, req, res) {
 
-    if (req.session.autorizado != true) {
+    if(req.session.autorizado !== true){
         res.send('Usuário precisa fazer login')
+        return;   
     }
 
-    res.render('aldeoes', { validacao: {} })
+    res.render('aldeoes')
 }
 
-module.exports.pergaminhos = function (application, req, res) {
-
-    if (req.session.autorizado != true) {
+module.exports.pergaminhos = function(application, req, res){
+    if(req.session.autorizado !== true){
         res.send('Usuário precisa fazer login')
+        return;   
     }
 
-    res.render('pergaminhos', { validacao: {} })
+    var connection = application.config.dbConnection
+    var JogoDAO = new application.app.models.JogoDAO(connection)
+
+    var usuario = req.session.usuario
+    JogoDAO.getAcoes(usuario, res)
 }
+
 
 module.exports.ordenar_acao_sudito = function (application, req, res) {
-
-    if (req.session.autorizado != true) {
+    if(req.session.autorizado !== true){
         res.send('Usuário precisa fazer login')
+        return;   
     }
 
     var dadosForm = req.body
@@ -55,7 +62,7 @@ module.exports.ordenar_acao_sudito = function (application, req, res) {
     req.assert('quantidade', 'Quantidade deve ser informado').notEmpty()
 
     var erros = req.validationErrors()
-    
+
     if (erros) {
         res.redirect('jogo?msg=A')
         return
