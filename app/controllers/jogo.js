@@ -4,9 +4,9 @@ module.exports.jogo = function (application, req, res) {
         res.send('Usuário precisa fazer login')
     }
 
-    var comando_invalido = 'N'
-    if(req.query.comando_invalido == 'S'){
-        comando_invalido = 'S'
+    var msg = ''
+    if (req.query.msg != '') {
+        msg = req.query.msg
     }
 
     var usuario = req.session.usuario
@@ -15,7 +15,7 @@ module.exports.jogo = function (application, req, res) {
     var connection = application.config.dbConnection
     var JogoDAO = new application.app.models.JogoDAO(connection)
 
-    parametros = JogoDAO.iniciarjogo(usuario, res, casa, comando_invalido)
+    parametros = JogoDAO.iniciarjogo(usuario, res, casa, msg)
 }
 
 module.exports.sair = function (application, req, res) {
@@ -55,12 +55,17 @@ module.exports.ordenar_acao_sudito = function (application, req, res) {
     req.assert('quantidade', 'Quantidade deve ser informado').notEmpty()
 
     var erros = req.validationErrors()
-
-    if(erros)
-    {
-        res.redirect('jogo')
+    
+    if (erros) {
+        res.redirect('jogo?msg=A')
         return
     }
 
-    res.send('Tudo ok')
+    var connection = application.config.dbConnection
+    var JogoDAO = new application.app.models.JogoDAO(connection)
+
+    dadosForm.usuario = req.session.usuario
+    JogoDAO.acao(dadosForm)
+
+    res.redirect('jogo?msg=B')
 }
