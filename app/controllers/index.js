@@ -1,7 +1,7 @@
 const { render } = require("../../config/server");
 
 module.exports.index = function(application, req, res){
-    res.render('index', {validacao: {}});
+    res.render('index', {validacao: {}})
 }
 
 module.exports.autenticar = function(application,req,res){
@@ -19,5 +19,8 @@ module.exports.autenticar = function(application,req,res){
         return
     }
 
-    res.send('Iniciando Sessão')
+    var connection = application.config.dbConnection
+    var usuarioDao = new application.app.models.UsuarioDAO(connection)
+
+    usuarioDao.autenticar(dadosForm, req, res)
 }
