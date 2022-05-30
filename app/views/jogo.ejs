@@ -40,10 +40,26 @@
 					method: 'get',
 					success: function (data) {
 						$('#acoes').html(data)
+
+						clearTimeout(timerId)
+						cronometro()
 					}
 				})
 			})
 		})
+
+		let timerId = null
+
+		function cronometro() {
+			$('.tempo_restante').each(function () {
+				let segundos = $(this).html()
+				var segundos_atuais = parseInt(segundos) - 1
+
+				$(this).html(segundos_atuais)
+			})
+
+			timerId = setTimeout('cronometro()', 1000)
+		}
 	</script>
 
 </head>
@@ -63,56 +79,56 @@
 			<div class="alert alert-danger" id="msg">
 				<strong>Operação inválida, verifique se todos os campos foram informados!</strong>
 			</div>
-		<% } %>
-		<% if(msg=='B' ) { %>
-			<div class="alert alert-danger" id="msg">
-				<strong>Ação Realizada com sucesso!</strong>
-			</div>
-		<% } %>
-				<div class="row">
-					<div class="col-sm-3 casa">
-						<img src="images/casa_<%= img_casa%>.jpg" />
+			<% } %>
+				<% if(msg=='B' ) { %>
+					<div class="alert alert-danger" id="msg">
+						<strong>Ação Realizada com sucesso!</strong>
 					</div>
-
-					<div class="col-sm-9">
-						<div class="row barra-superior">
-							<div class="col-sm-2">
-								<img src="images/habilidades/temor.jpg" title="Temor" alt="Temor" />
-								<span>
-									<%= jogo.temor%>
-								</span>
+					<% } %>
+						<div class="row">
+							<div class="col-sm-3 casa">
+								<img src="images/casa_<%= img_casa%>.jpg" />
 							</div>
 
-							<div class="col-sm-2">
-								<img src="images/habilidades/sabedoria.jpg" title="Sabedoria" alt="Sabedoria" />
-								<span>
-									<%= jogo.sabedoria%>
-								</span>
-							</div>
+							<div class="col-sm-9">
+								<div class="row barra-superior">
+									<div class="col-sm-2">
+										<img src="images/habilidades/temor.jpg" title="Temor" alt="Temor" />
+										<span>
+											<%= jogo.temor%>
+										</span>
+									</div>
 
-							<div class="col-sm-2">
-								<img src="images/habilidades/comercio.jpg" title="Comércio" alt="Comércio" />
-								<span>
-									<%= jogo.comercio%>
-								</span>
-							</div>
+									<div class="col-sm-2">
+										<img src="images/habilidades/sabedoria.jpg" title="Sabedoria" alt="Sabedoria" />
+										<span>
+											<%= jogo.sabedoria%>
+										</span>
+									</div>
 
-							<div class="col-sm-2">
-								<img src="images/habilidades/magia.jpg" title="Magia" alt="Magia" />
-								<span>
-									<%= jogo.magia%>
-								</span>
+									<div class="col-sm-2">
+										<img src="images/habilidades/comercio.jpg" title="Comércio" alt="Comércio" />
+										<span>
+											<%= jogo.comercio%>
+										</span>
+									</div>
+
+									<div class="col-sm-2">
+										<img src="images/habilidades/magia.jpg" title="Magia" alt="Magia" />
+										<span>
+											<%= jogo.magia%>
+										</span>
+									</div>
+								</div>
 							</div>
 						</div>
-					</div>
-				</div>
 
-				<div class="row">
-					<div class="col-sm-3"></div>
-					<div class="col-sm-9">
-						<div class="acoes" id="acoes">Senhor o que deseja fazer hoje?</div>
-					</div>
-				</div>
+						<div class="row">
+							<div class="col-sm-3"></div>
+							<div class="col-sm-9">
+								<div class="acoes" id="acoes">Senhor o que deseja fazer hoje?</div>
+							</div>
+						</div>
 
 	</div>
 
